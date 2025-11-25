@@ -1,6 +1,7 @@
 ## International Components for Unicode (ICU4J) v72.1
 
 ### ICU4J License
+
 ```
 
 COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
@@ -515,4 +516,3 @@ use or other dealings in these Data Files or Software without prior
 written authorization of the copyright holder.
 
 ```
-

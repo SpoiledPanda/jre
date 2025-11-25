@@ -1,6 +1,7 @@
 ## GStreamer v1.24.10
 
 ### GStreamer Notice
+
 ```
 
 You are receiving a copy of GStreamer, Version: 1.24.10 in either source or
@@ -27,6 +28,7 @@ code is here:
 ```
 
 ### LICENSE
+
 ```
 There are multiple licenses that apply to different parts of GStreamer. The
 overarching license is LGPL 2.1, however parts are covered by BSD-style
@@ -34,6 +36,7 @@ licenses.
 ```
 
 #### LGPL 2.1 License
+
 ```
 Copyright (C) <2007-2008> Pioneers of the Inevitable <songbird@songbirdnest.com>
 Copyright (C) <2020> The GStreamer Contributors.
@@ -662,6 +665,7 @@ Sebastian Dröge <slomo@coaxion.net>
 ```
 
 #### BSD License
+
 ```
 ---------------------------------
 The below applies to the following file(s):
@@ -705,6 +709,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 #### Permissive License
+
 ```
 ---------------------------------
 The below applies to the following file(s):

@@ -1,6 +1,7 @@
 ## The Unicode Standard, Unicode Character Database, Version 15.0.0
 
 ### Unicode Character Database
+
 ```
 
 UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
@@ -100,4 +101,3 @@ Entire Agreement. This Agreement constitutes the entire agreement between the pa
 
 
 ```
-
