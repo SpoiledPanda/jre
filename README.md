@@ -16,14 +16,11 @@ release\bin\java -version
 
 ```bash
 release/bin/java -version
-```bash
+```
 
 ### Run a JAR File
-```bash
 
 **Windows:**
-
-```
 
 ```cmd
 release\bin\java -jar path\to\your-application.jar
@@ -48,30 +45,20 @@ jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
   -jar ctbrec-25.11.2.jar
 ```
 
-```text
-
-
-```text
-release/bin/java -jar path/to/your-application.jar
-````
-
-````
-
 ### Run a Java Class
 
 **Windows:**
 
 ```cmd
 release\bin\java -cp lib\your-app.jar com.example.MainClass
-```cmd
-
 ```
+
+**Linux/macOS:**
 
 ```bash
-```bash
+release/bin/java -cp lib/your-app.jar com.example.MainClass
 ```
 
-```
 ## Directory Structure
 
 - **`release/bin/`** — Java executables and launcher scripts
@@ -104,15 +91,18 @@ Additional runtime properties can be found in:
 
 - This is a **runtime distribution** — it does not include source code or build tools.
 - Module licensing information is available in the `legal/` directory for each module.
-```bash
 
-```
+## Troubleshooting
 
 - Missing JavaFX / application fails to start: use the bundled `release/bin/java` or `jre/bin/java` from this distribution. If you run a system JDK, ensure JavaFX modules are available or add `--add-modules` as shown in the CTB Recorder example.
 - Config not found / wrong `config` path: run from the product root or set `-Dctbrec.config.dir=absolute\path\to\config`.
 - FFmpeg errors during merging/post-processing: verify `lib/ffmpeg/` contains an executable and that the binary is compatible with your OS/arch. Logs for FFmpeg are written to the recording segments directory (look for `merge.log`).
 - Electron/minimal browser login failures: the minimal browser listens on TCP port `3202`; ensure nothing else blocks that port and cookies are persisted in `config/<version>/cookies-<site>.json`.
 - Cloudflare / protected pages: optional `flaresolverr` service can help; configure `flaresolverr.apiUrl` in `settings.json`.
+
+## CTB Recorder Command Examples
+
+Multi-line (cmd with `^` line continuation):
 
 ```cmd
 jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
