@@ -26,16 +26,16 @@ set JAR_COUNT=0
 
 REM Check if any ctbrec-*.jar files exist in root
 for %%f in (ctbrec-*.jar) do (
-    if exist "%%f" (
-        set /a JAR_COUNT+=1
-        set JAR_FILE=%%f
-    )
+    set /a JAR_COUNT+=1
+    set JAR_FILE=%%f
+    set LAST_JAR=%%f
 )
 
-REM Warn if multiple JARs found
+REM Warn if multiple JARs found (uses last one alphabetically)
 if !JAR_COUNT! gtr 1 (
     echo WARNING: Multiple ctbrec JAR files found in root directory.
-    echo Using: !JAR_FILE!
+    echo Using last alphabetically: !LAST_JAR!
+    echo To use a specific version, delete other JAR files or specify the JAR directly.
     echo.
 )
 
