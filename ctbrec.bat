@@ -22,19 +22,21 @@ set JAVAFX_OPENS=--add-opens javafx.controls/com.sun.javafx.scene.control.behavi
 REM Try to find the JAR file - check for both versioned and snapshot builds
 REM First check for specific versioned JARs in root directory
 set JAR_FILE=
-if exist "ctbrec-*.jar" (
-    REM Count matching files to detect multiple versions
-    set JAR_COUNT=0
-    for %%f in (ctbrec-*.jar) do (
+set JAR_COUNT=0
+
+REM Check if any ctbrec-*.jar files exist in root
+for %%f in (ctbrec-*.jar) do (
+    if exist "%%f" (
         set /a JAR_COUNT+=1
         set JAR_FILE=%%f
     )
-    REM Warn if multiple JARs found
-    if !JAR_COUNT! gtr 1 (
-        echo WARNING: Multiple ctbrec JAR files found in root directory.
-        echo Using: !JAR_FILE!
-        echo.
-    )
+)
+
+REM Warn if multiple JARs found
+if !JAR_COUNT! gtr 1 (
+    echo WARNING: Multiple ctbrec JAR files found in root directory.
+    echo Using: !JAR_FILE!
+    echo.
 )
 
 REM If no JAR in root, check target directory for built artifacts
