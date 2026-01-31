@@ -11,7 +11,7 @@ This repository contains a packaged Java Runtime Environment (JRE) distribution 
 ## Repository Structure
 
 ```
-/home/runner/work/jre/jre/
+jre/
 ├── .github/              # GitHub configuration including Copilot instructions
 ├── src/main/java/        # Java source files
 │   └── ui/              # JavaFX UI components
@@ -45,7 +45,7 @@ mvn clean package
 
 **Using the bundled JRE (recommended):**
 ```cmd
-jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 --add-modules javafx.controls,javafx.media,javafx.swing --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED -jar ctbrec-25.11.2.jar
+bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 --add-modules javafx.controls,javafx.media,javafx.swing --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED -jar ctbrec-25.11.2.jar
 ```
 
 **Using the shaded JAR:**
@@ -145,7 +145,7 @@ Currently, there is no test infrastructure in place. When adding tests:
 
 ---
 
-**Last Updated**: 2026-01-30
+**Last Updated**: 2026-01-31
 **Java Version**: 21
 **JavaFX Version**: 21.0.2
 **Maven Compiler**: Source and Target 21
