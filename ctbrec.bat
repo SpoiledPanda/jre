@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 REM CTB Recorder Launcher Script
 REM Launches the CTB Recorder application with bundled JRE and required JavaFX modules
 
@@ -10,20 +11,43 @@ REM Java executable from bundled JRE
 set JAVA_EXE=bin\java.exe
 
 REM JVM arguments
-set JVM_ARGS=-Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8
+REM Default memory: 4GB (can be overridden with CTBREC_MEMORY environment variable)
+if not defined CTBREC_MEMORY set CTBREC_MEMORY=4g
+set JVM_ARGS=-Xmx%CTBREC_MEMORY% -Dctbrec.config.dir=./config -Dfile.encoding=utf-8
 
 REM JavaFX module configuration
 set JAVAFX_MODULES=--add-modules javafx.controls,javafx.media,javafx.swing
 set JAVAFX_OPENS=--add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED
 
 REM Try to find the JAR file - check for both versioned and snapshot builds
+REM First check for specific versioned JARs in root directory
+set JAR_FILE=
 if exist "ctbrec-*.jar" (
-    for %%f in (ctbrec-*.jar) do set JAR_FILE=%%f
-) else if exist "target\ctbrec-1.0-SNAPSHOT-shaded.jar" (
-    set JAR_FILE=target\ctbrec-1.0-SNAPSHOT-shaded.jar
-) else if exist "target\ctbrec-1.0-SNAPSHOT.jar" (
-    set JAR_FILE=target\ctbrec-1.0-SNAPSHOT.jar
-) else (
+    REM Count matching files to detect multiple versions
+    set JAR_COUNT=0
+    for %%f in (ctbrec-*.jar) do (
+        set /a JAR_COUNT+=1
+        set JAR_FILE=%%f
+    )
+    REM Warn if multiple JARs found
+    if !JAR_COUNT! gtr 1 (
+        echo WARNING: Multiple ctbrec JAR files found in root directory.
+        echo Using: !JAR_FILE!
+        echo.
+    )
+)
+
+REM If no JAR in root, check target directory for built artifacts
+if not defined JAR_FILE (
+    if exist "target\ctbrec-1.0-SNAPSHOT-shaded.jar" (
+        set JAR_FILE=target\ctbrec-1.0-SNAPSHOT-shaded.jar
+    ) else if exist "target\ctbrec-1.0-SNAPSHOT.jar" (
+        set JAR_FILE=target\ctbrec-1.0-SNAPSHOT.jar
+    )
+)
+
+REM Final check - exit with error if no JAR found
+if not defined JAR_FILE (
     echo ERROR: Could not find ctbrec JAR file
     echo Please ensure the application has been built or the JAR file is present
     pause
