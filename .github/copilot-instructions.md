@@ -145,7 +145,7 @@ Currently, there is no test infrastructure in place. When adding tests:
 
 ---
 
-**Last Updated**: 2026-01-31
+**Last Updated**: 2026-07-23
 **Java Version**: 21
 **JavaFX Version**: 21.0.2
 **Maven Compiler**: Source and Target 21
