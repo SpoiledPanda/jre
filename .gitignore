@@ -1,1 +1,5 @@
 /.aws/credentials
+/target/
+*.class
+*.jar
+dependency-reduced-pom.xml
