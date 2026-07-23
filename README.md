@@ -6,10 +6,16 @@ This directory contains a packaged Java Runtime Environment (JRE) for running Ja
 
 ### Check Java Version
 
-**Windows:**
+**Windows (CMD):**
 
 ```cmd
 release\bin\java -version
+```
+
+**Windows (Git Bash):**
+
+```bash
+release/bin/java -version
 ```
 
 **Linux/macOS:**
@@ -20,13 +26,21 @@ release/bin/java -version
 
 ### Run a JAR File
 
-**Windows:**
+**Windows (CMD):**
 
 ```cmd
 release\bin\java -jar path\to\your-application.jar
 ```
 
+**Windows (Git Bash):**
+
+```bash
+release/bin/java -jar path/to/your-application.jar
+```
+
 Minimal invocation is sufficient to start most applications. For CTB Recorder the distribution includes recommended JVM flags and module options; use the bundled launcher (`ctbrec.bat`) or run the example below from the product root so `./config` resolves correctly:
+
+**Windows (CMD):**
 
 ```cmd
 rem Minimal (starts the app)
@@ -45,12 +59,37 @@ jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
   -jar ctbrec-25.11.2.jar
 ```
 
+**Windows (Git Bash):**
+
+```bash
+# Minimal (starts the app)
+release/bin/java -jar path/to/your-application.jar
+
+# Shaded artifact (built by Maven Shade plugin)
+release/bin/java.exe -jar target/ctbrec-1.0-SNAPSHOT-shaded.jar
+
+# Shaded artifact with explicit JavaFX modules (if runtime lacks JavaFX)
+release/bin/java.exe --module-path "lib/javafx-sdk/lib" --add-modules=javafx.controls,javafx.fxml -jar target/ctbrec-1.0-SNAPSHOT-shaded.jar
+
+# Recommended (CTB Recorder example with JVM args and JavaFX modules)
+jre/bin/java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 \
+  --add-modules javafx.controls,javafx.media,javafx.swing \
+  --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED \
+  -jar ctbrec-25.11.2.jar
+```
+
 ### Run a Java Class
 
-**Windows:**
+**Windows (CMD):**
 
 ```cmd
 release\bin\java -cp lib\your-app.jar com.example.MainClass
+```
+
+**Windows (Git Bash):**
+
+```bash
+release/bin/java -cp lib/your-app.jar com.example.MainClass
 ```
 
 **Linux/macOS:**
@@ -102,7 +141,7 @@ Additional runtime properties can be found in:
 
 ## CTB Recorder Command Examples
 
-Multi-line (cmd with `^` line continuation):
+**Windows CMD** (multi-line with `^` line continuation):
 
 ```cmd
 jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
@@ -111,18 +150,27 @@ jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
   -jar ctbrec-25.11.2.jar
 ```
 
-Single-line (cmd):
+**Windows CMD** (single-line):
 
 ```cmd
 jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 --add-modules javafx.controls,javafx.media,javafx.swing --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED -jar ctbrec-25.11.2.jar
 ```
 
-PowerShell (use backtick ` as line-continuation):
+**Windows PowerShell** (use backtick ` as line-continuation):
 
 ```powershell
 jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 `
   --add-modules javafx.controls,javafx.media,javafx.swing `
   --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED `
+  -jar ctbrec-25.11.2.jar
+```
+
+**Windows Git Bash / Linux / macOS** (use backslash `\` as line-continuation):
+
+```bash
+jre/bin/java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 \
+  --add-modules javafx.controls,javafx.media,javafx.swing \
+  --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED \
   -jar ctbrec-25.11.2.jar
 ```
 
