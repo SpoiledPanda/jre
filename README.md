@@ -1,131 +1,80 @@
-# JRE Distribution
+# CTB Recorder Java Runtime Distribution
 
-This directory contains a packaged Java Runtime Environment (JRE) for running Java applications. It includes the Java runtime, JavaFX libraries, and required configuration files.
+This repository packages a Windows Java 21 runtime with JavaFX and a small Maven-based JavaFX launcher stub. It is intended to provide a consistent runtime for CTB Recorder artifacts, not to contain the recorder application's source code.
 
-## Quick Start
+## Contents
 
-### Check Java Version
+- `bin\` contains the bundled Java executable and required Windows native libraries.
+- `lib\` contains the Java runtime module image and JavaFX runtime assets.
+- `conf\` contains Java logging, networking, sound, and security configuration.
+- `legal\` contains license and notice material for bundled modules.
+- `ctbrec.bat` starts a CTB Recorder JAR with the required JVM and JavaFX options.
+- `src\main\java\ui\CamrecApplication.java` is a placeholder JavaFX application used to verify the Maven build.
 
-**Windows:**
+Do not modify the bundled runtime directories (`bin\`, `lib\`, `conf\`, or `legal\`) unless intentionally updating the distribution.
 
-```cmd
-release\bin\java -version
-```
+## Prerequisites
 
-**Linux/macOS:**
+- A JDK 21 or later and Maven 3.6 or later to build the placeholder application.
+- Windows to run the bundled runtime in this repository. The included executable and native libraries are Windows-specific.
 
-```bash
-release/bin/java -version
-```
+## Use the bundled runtime
 
-### Run a JAR File
-
-**Windows:**
-
-```cmd
-release\bin\java -jar path\to\your-application.jar
-```
-
-Minimal invocation is sufficient to start most applications. For CTB Recorder the distribution includes recommended JVM flags and module options; use the bundled launcher (`ctbrec.bat`) or run the example below from the product root so `./config` resolves correctly:
+From the repository root, confirm the bundled runtime version:
 
 ```cmd
-rem Minimal (starts the app)
-release\bin\java -jar path\to\your-application.jar
-
-rem Shaded artifact (built by Maven Shade plugin)
-"release\bin\java.exe" -jar "target\ctbrec-1.0-SNAPSHOT-shaded.jar"
-
-rem Shaded artifact with explicit JavaFX modules (if runtime lacks JavaFX)
-"release\bin\java.exe" --module-path "lib\javafx-sdk\lib" --add-modules=javafx.controls,javafx.fxml -jar "target\ctbrec-1.0-SNAPSHOT-shaded.jar"
-
-rem Recommended (CTB Recorder example with JVM args and JavaFX modules)
-jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
-  --add-modules javafx.controls,javafx.media,javafx.swing ^
-  --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED ^
-  -jar ctbrec-25.11.2.jar
+bin\java.exe -version
 ```
 
-### Run a Java Class
-
-**Windows:**
+Run any compatible JAR:
 
 ```cmd
-release\bin\java -cp lib\your-app.jar com.example.MainClass
+bin\java.exe -jar path\to\application.jar
 ```
 
-**Linux/macOS:**
+## Build and run the placeholder application
 
-```bash
-release/bin/java -cp lib/your-app.jar com.example.MainClass
-```
-
-## Directory Structure
-
-- **`release/bin/`** — Java executables and launcher scripts
-- **`lib/`** — Core Java modules, JavaFX properties, and runtime libraries
-  - `lib/modules` — Combined module image (core Java + JavaFX modules)
-- **`conf/`** — Runtime configuration files
-  - `logging.properties` — Java logging configuration
-  - `security/` — Security policies and settings
-- **`legal/`** — License files for each module (Java, JavaFX, third-party components)
-
-## Configuration
-
-### Logging
-
-Edit `conf/logging.properties` to customize Java logging behavior.
-
-### Security
-
-Security policies are defined in `conf/security/java.policy` and `conf/security/java.security`.
-
-### System Properties
-
-Additional runtime properties can be found in:
-
-- `lib/javafx.properties` — JavaFX-specific settings
-- `conf/net.properties` — Networking configuration
-- `conf/sound.properties` — Audio system settings
-
-## Notes
-
-- This is a **runtime distribution** — it does not include source code or build tools.
-- Module licensing information is available in the `legal/` directory for each module.
-
-## Troubleshooting
-
-- Missing JavaFX / application fails to start: use the bundled `release/bin/java` or `jre/bin/java` from this distribution. If you run a system JDK, ensure JavaFX modules are available or add `--add-modules` as shown in the CTB Recorder example.
-- Config not found / wrong `config` path: run from the product root or set `-Dctbrec.config.dir=absolute\path\to\config`.
-- FFmpeg errors during merging/post-processing: verify `lib/ffmpeg/` contains an executable and that the binary is compatible with your OS/arch. Logs for FFmpeg are written to the recording segments directory (look for `merge.log`).
-- Electron/minimal browser login failures: the minimal browser listens on TCP port `3202`; ensure nothing else blocks that port and cookies are persisted in `config/<version>/cookies-<site>.json`.
-- Cloudflare / protected pages: optional `flaresolverr` service can help; configure `flaresolverr.apiUrl` in `settings.json`.
-
-## CTB Recorder Command Examples
-
-Multi-line (cmd with `^` line continuation):
+Build both Maven artifacts:
 
 ```cmd
-jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 ^
-  --add-modules javafx.controls,javafx.media,javafx.swing ^
-  --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED ^
-  -jar ctbrec-25.11.2.jar
+mvn clean package
 ```
 
-Single-line (cmd):
+This produces:
+
+- `target\ctbrec-1.0-SNAPSHOT.jar`
+- `target\ctbrec-1.0-SNAPSHOT-shaded.jar`
+
+Run the shaded JAR with the bundled runtime:
 
 ```cmd
-jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 --add-modules javafx.controls,javafx.media,javafx.swing --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED -jar ctbrec-25.11.2.jar
+bin\java.exe -jar target\ctbrec-1.0-SNAPSHOT-shaded.jar
 ```
 
-PowerShell (use backtick ` as line-continuation):
+The Maven build selects JavaFX native dependencies for Windows, Linux, or macOS based on the build host. That selection does not make the bundled runtime itself cross-platform.
 
-```powershell
-jre\bin\java -Xmx4g -Dctbrec.config.dir=./config -Dfile.encoding=utf-8 `
-  --add-modules javafx.controls,javafx.media,javafx.swing `
-  --add-opens javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED `
-  -jar ctbrec-25.11.2.jar
+## Launch CTB Recorder
+
+Place a CTB Recorder JAR named `ctbrec-*.jar` in the repository root, then run:
+
+```cmd
+ctbrec.bat
 ```
 
-## Platform Support
+The launcher selects the last matching root-level JAR alphabetically. If none is present, it falls back to the Maven artifacts in `target\`, preferring the shaded JAR. It starts Java with:
 
-This JRE distribution is pre-built for the target platform. Ensure you're using the correct distribution for your operating system and architecture.
+- `-Xmx4g` by default; set `CTBREC_MEMORY` to override it, for example `set CTBREC_MEMORY=2g`
+- `-Dctbrec.config.dir=./config`
+- `-Dfile.encoding=utf-8`
+- the `javafx.controls`, `javafx.media`, and `javafx.swing` modules
+- the JavaFX control-behavior package opened to unnamed modules
+
+Extra arguments passed to `ctbrec.bat` are forwarded to the application.
+
+## Configuration and licensing
+
+Runtime configuration is read from `conf\`. In particular, edit `conf\logging.properties` for Java logging and review `conf\security\java.security` and `conf\security\java.policy` before changing security behavior. License and notice information for the bundled runtime is in `legal\`.
+
+## Diagnostics
+
+`diagnose-doppiocdn.bat` checks the Windows hosts file, DNS resolution, connectivity, and WinHTTP proxy settings for `img.doppiocdn.net`. Use it when that CDN is unexpectedly redirected or inaccessible.
